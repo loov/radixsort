@@ -4,14 +4,14 @@ package radixsort
 //
 // len(buf) must equal len(arr)
 func Uint32(arr, buf []uint32) {
-	if int64(len(arr)) >= int64(1<<32) {
-		panic("slice too large")
-	}
 	if len(arr) != len(buf) {
 		panic("len(arr) != len(buf)")
 	}
-	if len(arr) == 0 {
+	if len(arr) <= 1 {
 		return
+	}
+	if int64(len(arr)) >= int64(1<<32) {
+		panic("slice too large")
 	}
 
 	prev := arr[0]
