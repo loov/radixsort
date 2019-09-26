@@ -10,6 +10,12 @@ func Uint64(arr, buf []uint64) {
 	if len(arr) != len(buf) {
 		panic("len(arr) != len(buf)")
 	}
+	if len(arr) == 0 {
+		return
+	}
+
+	prev := arr[0]
+	sorted := true
 
 	var count [8][256]uint32
 	for _, v := range arr {
@@ -21,6 +27,12 @@ func Uint64(arr, buf []uint64) {
 		count[5][byte(v>>(5*8))]++
 		count[6][byte(v>>(6*8))]++
 		count[7][byte(v>>(7*8))]++
+
+		sorted = sorted && prev <= v
+		prev = v
+	}
+	if sorted {
+		return
 	}
 
 	var offset [8][256]uint32

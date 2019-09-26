@@ -10,6 +10,12 @@ func Uint32(arr, buf []uint32) {
 	if len(arr) != len(buf) {
 		panic("len(arr) != len(buf)")
 	}
+	if len(arr) == 0 {
+		return
+	}
+
+	prev := arr[0]
+	sorted := true
 
 	var count [4][256]uint32
 	for _, v := range arr {
@@ -17,6 +23,12 @@ func Uint32(arr, buf []uint32) {
 		count[1][byte(v>>(1*8))]++
 		count[2][byte(v>>(2*8))]++
 		count[3][byte(v>>(3*8))]++
+
+		sorted = sorted && prev <= v
+		prev = v
+	}
+	if sorted {
+		return
 	}
 
 	var offset [4][256]uint32
@@ -43,6 +55,7 @@ func Uint32(arr, buf []uint32) {
 
 		off := &offset[k]
 		p := k * 8
+
 		for _, v := range src {
 			key := uint8(v >> p)
 			dst[off[key]] = v
