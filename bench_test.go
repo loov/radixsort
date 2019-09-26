@@ -7,6 +7,20 @@ import (
 	"github.com/zeebo/pcg"
 )
 
+type SizeBenchmark struct {
+	Name string
+	Size int
+}
+
+var BenchmarkSizes = []SizeBenchmark{
+	{"1e2", 1e2},
+	{"1e3", 1e3},
+	{"1e4", 1e4},
+	{"1e5", 1e5},
+	{"1e6", 1e6},
+	{"1e7", 1e7},
+}
+
 func bench32(b *testing.B, size int, algo func(src, dst []uint32)) {
 	rng := pcg.New(0)
 	data := make([]uint32, size)
@@ -35,12 +49,33 @@ func bench64(b *testing.B, size int, algo func(src, dst []uint64)) {
 	}
 }
 
-func BenchmarkOverhead32_1e4(b *testing.B) { bench32(b, 1e4, func(x, y []uint32) {}) }
-func BenchmarkOverhead32_1e6(b *testing.B) { bench32(b, 1e6, func(x, y []uint32) {}) }
-func BenchmarkOverhead64_1e4(b *testing.B) { bench64(b, 1e4, func(x, y []uint64) {}) }
-func BenchmarkOverhead64_1e6(b *testing.B) { bench64(b, 1e6, func(x, y []uint64) {}) }
+func BenchmarkOverhead32(b *testing.B) {
+	for _, bench := range BenchmarkSizes {
+		b.Run(bench.Name, func(b *testing.B) {
+			bench32(b, bench.Size, func(x, y []uint32) {})
+		})
+	}
+}
 
-func BenchmarkUint32_1e4(b *testing.B) { bench32(b, 1e4, radixsort.Uint32) }
-func BenchmarkUint32_1e6(b *testing.B) { bench32(b, 1e6, radixsort.Uint32) }
-func BenchmarkUint64_1e4(b *testing.B) { bench64(b, 1e4, radixsort.Uint64) }
-func BenchmarkUint64_1e6(b *testing.B) { bench64(b, 1e6, radixsort.Uint64) }
+func BenchmarkOverhead64(b *testing.B) {
+	for _, bench := range BenchmarkSizes {
+		b.Run(bench.Name, func(b *testing.B) {
+			bench64(b, bench.Size, func(x, y []uint64) {})
+		})
+	}
+}
+
+func BenchmarkUint32(b *testing.B) {
+	for _, bench := range BenchmarkSizes {
+		b.Run(bench.Name, func(b *testing.B) {
+			bench32(b, bench.Size, radixsort.Uint32)
+		})
+	}
+}
+func BenchmarkUint64(b *testing.B) {
+	for _, bench := range BenchmarkSizes {
+		b.Run(bench.Name, func(b *testing.B) {
+			bench64(b, bench.Size, radixsort.Uint64)
+		})
+	}
+}
