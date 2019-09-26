@@ -51,8 +51,9 @@ func Uint64(arr, buf []uint64) {
 	src, dst := arr, buf
 	for k := uint8(0); k < 8; k++ {
 		nz := 0
-		for _, v := range count[k] {
-			if v != 0 {
+		cnt := &count[k]
+		for i := range cnt {
+			if cnt[i] != 0 {
 				nz++
 			}
 		}
