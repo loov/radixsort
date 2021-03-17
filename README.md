@@ -1,6 +1,6 @@
 # radixsort
 
-`radixsort` package implements radix sorting for `int32` and `int64`.
+`radixsort` package implements radix sorting for `uint`, `uint32` and `uint64`.
 
 The usage looks like:
 
