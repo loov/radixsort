@@ -49,7 +49,7 @@ func bench64(b *testing.B, size int, algo func(src, dst []uint64)) {
 	}
 }
 
-func BenchmarkOverhead32(b *testing.B) {
+func BenchmarkPCGOverhead32(b *testing.B) {
 	for _, bench := range BenchmarkSizes {
 		b.Run(bench.Name, func(b *testing.B) {
 			bench32(b, bench.Size, func(x, y []uint32) {})
@@ -57,7 +57,7 @@ func BenchmarkOverhead32(b *testing.B) {
 	}
 }
 
-func BenchmarkOverhead64(b *testing.B) {
+func BenchmarkPCGOverhead64(b *testing.B) {
 	for _, bench := range BenchmarkSizes {
 		b.Run(bench.Name, func(b *testing.B) {
 			bench64(b, bench.Size, func(x, y []uint64) {})
