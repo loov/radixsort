@@ -49,6 +49,28 @@ func bench64(b *testing.B, size int, algo func(src, dst []uint64)) {
 	}
 }
 
+func benchUint(b *testing.B, size int, algo func(src, dst []uint)) {
+	rng := pcg.New(uint64(0))
+	data := make([]uint, size)
+	buf := make([]uint, len(data))
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		for i := 0; i < len(data); i++ {
+			data[i] = uint(rng.Uint64())
+		}
+		algo(data, buf)
+	}
+}
+
+func BenchmarkPCGOverhead(b *testing.B) {
+	for _, bench := range BenchmarkSizes {
+		b.Run(bench.Name, func(b *testing.B) {
+			benchUint(b, bench.Size, func(x, y []uint) {})
+		})
+	}
+}
+
 func BenchmarkPCGOverhead32(b *testing.B) {
 	for _, bench := range BenchmarkSizes {
 		b.Run(bench.Name, func(b *testing.B) {
@@ -72,10 +94,19 @@ func BenchmarkUint32(b *testing.B) {
 		})
 	}
 }
+
 func BenchmarkUint64(b *testing.B) {
 	for _, bench := range BenchmarkSizes {
 		b.Run(bench.Name, func(b *testing.B) {
 			bench64(b, bench.Size, radixsort.Uint64)
+		})
+	}
+}
+
+func BenchmarkUint(b *testing.B) {
+	for _, bench := range BenchmarkSizes {
+		b.Run(bench.Name, func(b *testing.B) {
+			benchUint(b, bench.Size, radixsort.Uint)
 		})
 	}
 }
