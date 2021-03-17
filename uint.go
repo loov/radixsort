@@ -7,7 +7,7 @@ import (
 
 // Uint implements radix sort using secondary buffer.
 //
-// len(buf) must equal len(arr)
+// buf must be larger than arr.
 func Uint(arr, buf []uint) {
 	if bits.UintSize == 4 {
 		uint_32(arr, buf)
@@ -17,9 +17,10 @@ func Uint(arr, buf []uint) {
 }
 
 func uint_32(arr, buf []uint) {
-	if len(arr) != len(buf) {
-		panic("len(arr) != len(buf)")
+	if len(arr) > len(buf) {
+		panic("len(arr) > len(buf)")
 	}
+	buf = buf[:len(arr)]
 	if len(arr) <= 1 {
 		return
 	}
@@ -147,9 +148,10 @@ func uint_32_large(arr, buf []uint) {
 //
 // len(buf) must equal len(arr)
 func uint_64(arr, buf []uint) {
-	if len(arr) != len(buf) {
-		panic("len(arr) != len(buf)")
+	if len(arr) > len(buf) {
+		panic("len(arr) > len(buf)")
 	}
+	buf = buf[:len(arr)]
 	if len(arr) <= 1 {
 		return
 	}

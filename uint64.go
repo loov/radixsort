@@ -4,11 +4,12 @@ import "math"
 
 // Uint64 implements radix sort using secondary buffer.
 //
-// len(buf) must equal len(arr)
+// buf must be larger than arr.
 func Uint64(arr, buf []uint64) {
-	if len(arr) != len(buf) {
-		panic("len(arr) != len(buf)")
+	if len(arr) > len(buf) {
+		panic("len(arr) > len(buf)")
 	}
+	buf = buf[:len(arr)]
 	if len(arr) <= 1 {
 		return
 	}

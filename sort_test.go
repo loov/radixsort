@@ -139,3 +139,9 @@ func CheckUint(data []uint) bool {
 	radixsort.Uint(sorting, buffer)
 	return reflect.DeepEqual(expected, sorting)
 }
+
+func TestLargerBuffer(t *testing.T) {
+	radixsort.Uint([]uint{1, 2, 3}, make([]uint, 5))
+	radixsort.Uint32([]uint32{1, 2, 3}, make([]uint32, 5))
+	radixsort.Uint64([]uint64{1, 2, 3}, make([]uint64, 5))
+}
